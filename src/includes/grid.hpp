@@ -1,0 +1,27 @@
+#pragma once
+# include <vector>
+
+#define DEAD 0
+#define ALIVE 1
+
+using namespace std;
+class Grid
+{
+	public:
+		Grid();
+		Grid(int width, int height, int cellsize);
+		void Draw();
+		void SetValue(int row, int column, int value);
+		int GetValue(int row, int column);
+		int GetRows() {return rows;}
+		int GetColumns() {return columns;}
+		bool IsWithinBounds(int row, int column);
+		void FillRandom();
+		void Clear();
+		void ToggleCell(int row, int column);
+	private:
+		int rows;
+		int columns;
+		int cellSize;
+		vector<vector<int>> cells;
+};
