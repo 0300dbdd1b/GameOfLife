@@ -1,7 +1,7 @@
 #include <vector>
 #include <utility>
 #include "includes/simulation.hpp"
-
+#include <iostream>
 using namespace std;
 
 
@@ -32,10 +32,11 @@ int Simulation::CountLiveNeighbors(int row, int column)
 		{-1, 0},	// above
 		{1, 0},		// below
 		{0, -1},	// left
-		{0, 1},		// diagonal upper left
+		{0, 1},		// right
 		{-1, -1},	// diagonal upper right
 		{1, -1},	// diagonal lower left
-		{1, 1}		// diagonal lower right
+		{1, 1},
+		{-1, 1} 		// diagonal lower right
 	};
 	for (const auto& offset : neighborOffsets)
 	{
@@ -63,19 +64,19 @@ void Simulation::Update()
 				{
 					tmpGrid.SetValue(row, column, DEAD);
 				}
-	   			else
+				else
 				{
 					tmpGrid.SetValue(row, column, ALIVE);
 				}
 			}
-	   		else
-	   		{
+			else
+			{
 				if (liveNeighbors == 3)
-				{
+ 				{
 					tmpGrid.SetValue(row, column, ALIVE);
 				}
-	   			else
-	   			{
+				else
+				{
 					tmpGrid.SetValue(row, column, DEAD);
 				}
 			}
@@ -89,22 +90,17 @@ void Simulation::Update()
 bool Simulation::IsRunning()
 {
 	return run;
-}
+} 
 
 void Simulation::ClearGrid()
 {
-	if (!IsRunning())
-	{
 		grid.Clear();
-	}
+
 }
 
 void Simulation::CreateRandomState()
 {
-	if (!IsRunning())
-	{
 		grid.FillRandom();
-	}
 }
 
 void Simulation::ToggleCell(int row, int column)
@@ -113,4 +109,23 @@ void Simulation::ToggleCell(int row, int column)
 	{
 		grid.ToggleCell(row, column);
 	}
+}
+
+void Simulation::Resize(int width, int height, int cellsize)
+{
+	Grid newGrid (width, height, cellsize);
+	newGrid.FillRandom();
+	grid = newGrid;
+}
+
+int Simulation::GetWidth()
+{
+	int width = grid.GetRows() * grid.GetCellSize();
+	return width;
+}
+
+int Simulation::GetHeight()
+{
+	int height = grid.GetColumns() * grid.GetCellSize();
+	return height;
 }

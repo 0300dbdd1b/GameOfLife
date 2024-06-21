@@ -17,13 +17,11 @@ Grid::Grid(int width, int height, int cellsize)
 
 void Grid::Draw()
 {
-	Color COLOR_GREEN = {0, 255, 0, 255};
-	Color COLOR_GREY = {55, 55, 55, 255};
 	for (int row = 0; row < rows; row++)
 	{
 		for (int column = 0; column < columns; column++)
 		{
-			Color color = cells[row][column] ? COLOR_GREEN : COLOR_GREY;
+			Color color = cells[row][column] ? GREEN : GRAY;
 			DrawRectangle(column * cellSize, row * cellSize, cellSize - 1, cellSize - 1, color);
 		}
 	}
@@ -35,8 +33,8 @@ void Grid::FillRandom()
 	{
 		for (int column = 0; column < columns; column++)
 		{
-			int randomValue = GetRandomValue(0, 3);
-			cells[row][column] = (randomValue == 3) ? ALIVE : DEAD;
+			int randomValue = GetRandomValue(0, RANDOM_ALIVE_TRESHOLD);
+			cells[row][column] = (randomValue == RANDOM_ALIVE_TRESHOLD) ? ALIVE : DEAD;
 		}
 	}
 }

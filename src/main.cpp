@@ -1,60 +1,41 @@
 #include <raylib.h>
+#include <iostream>
 #include "includes/simulation.hpp"
+#include "includes/keybinds.hpp"
+
+const int WINDOW_WIDTH = 750;
+const int WINDOW_HEIGHT = 750;
 int main()
 {
-	Color GREY = {29, 29, 29, 255};
-	int FPS = 1;
-	const int WINDOW_WIDTH = 750;
-	const int WINDOW_HEIGHT = 750;
-	const int CELL_SIZE = 25;
+	int FPS = 60;
+	const int NCells = 100;
+	double cellsize = WINDOW_WIDTH / NCells;
+	double renderTreshold = 0.5f;
 
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "raylib");
 	SetTargetFPS(FPS);
 	
-	Simulation simulation(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE);
+	Simulation simulation(WINDOW_WIDTH, WINDOW_HEIGHT, cellsize);
+	double startTime = GetTime();
 	while (WindowShouldClose() == false)
 	{
-		if(IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+		double currentTime = GetTime();
+		double delta = currentTime - startTime;
+		KeybindChecks(simulation, renderTreshold, cellsize);
+		
+		if (simulation.IsRunning() && delta >= renderTreshold )
 		{
-			Vector2 mousePosition = GetMousePosition();
-			int row = mousePosition.y / CELL_SIZE;
-			int column = mousePosition.x / CELL_SIZE;
-			simulation.ToggleCell(row, column);
+			simulation.Update();
+			startTime = GetTime();
+			
 		}
-		if (IsKeyPressed(KEY_SPACE))
-		{
-			if (simulation.IsRunning())
-			{
-				simulation.Stop();
-			}
-			else
-			{
-				simulation.Start();
-			}
-		}
-		if (IsKeyPressed(KEY_F))
-		{
-			FPS += 2;
-			SetTargetFPS(FPS);
-		}
-		if (IsKeyPressed(KEY_S))
-		{
-			FPS -= 2;
-			SetTargetFPS(FPS);
-		}
-		if (IsKeyPressed(KEY_R))
-		{
-			simulation.CreateRandomState();
-		}
-		if (IsKeyPressed(KEY_C))
-		{
-			simulation.ClearGrid();
-		}
-
-		simulation.Update();
 		BeginDrawing();
-		ClearBackground(GREY);
+		ClearBackground(DARKGRAY);
 		simulation.Draw();
+		DrawFPS(0, 0);
+		string displayStr = to_string(renderTreshold);
+		displayStr.resize(4);
+		DrawText(displayStr.c_str(), WINDOW_WIDTH - 100, 0, 24 , RED);
 		EndDrawing();
 	}
 	CloseWindow();

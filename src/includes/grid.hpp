@@ -1,6 +1,7 @@
 #pragma once
 # include <vector>
 
+#define RANDOM_ALIVE_TRESHOLD 3
 #define DEAD 0
 #define ALIVE 1
 
@@ -15,7 +16,8 @@ class Grid
 		int GetValue(int row, int column);
 		int GetRows() {return rows;}
 		int GetColumns() {return columns;}
-		bool IsWithinBounds(int row, int column);
+		int GetCellSize() {return cellSize;}
+	bool IsWithinBounds(int row, int column);
 		void FillRandom();
 		void Clear();
 		void ToggleCell(int row, int column);

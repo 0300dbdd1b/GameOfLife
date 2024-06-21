@@ -2,15 +2,16 @@ SRCDIR      = ./src/
 INCDIR      = ./src/includes/
 SRCNAME     = main.cpp \
 			  grid.cpp \
-			  simulation.cpp
+			  simulation.cpp \
+			  keybinds.cpp
 SRCS        = $(addprefix $(SRCDIR), $(SRCNAME))
 
 OBJS        = $(SRCS:.cpp=.o)
 
 CC          = g++
-CFLAGS      = -std=c++11 -Wall -Wextra
-RL          = -I ~/clibs/raylib/src/
-LRL         = -L ~/clibs/raylib/src/ -lraylib -framework CoreFoundation -framework IOKit -framework Cocoa -framework CoreGraphics
+CFLAGS      = -std=c++11 -Wall -Wextra -g3
+RL          = -I /home/leslie/raylib/src/
+LRL         = -L /home/leslie/raylib/src/ -lraylib
 
 CXXFLAGS    = $(CFLAGS) $(DEFINES) $(RL)
 

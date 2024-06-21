@@ -6,7 +6,7 @@
       "-Wall",
       "-Wextra",
       "-I",
-      "/Users/leslie/clibs/raylib/src/",
+      "/home/leslie/raylib/src/",
       "-c",
       "-I",
       "./src/includes/",
@@ -14,9 +14,9 @@
       "src/main.o",
       "src/main.cpp"
     ],
-    "directory": "/Users/leslie/Documents/code/Cpp/GameOfLife",
-    "file": "/Users/leslie/Documents/code/Cpp/GameOfLife/src/main.cpp",
-    "output": "/Users/leslie/Documents/code/Cpp/GameOfLife/src/main.o"
+    "directory": "/home/leslie/Documents/GameOfLife",
+    "file": "/home/leslie/Documents/GameOfLife/src/main.cpp",
+    "output": "/home/leslie/Documents/GameOfLife/src/main.o"
   },
   {
     "arguments": [
@@ -25,7 +25,7 @@
       "-Wall",
       "-Wextra",
       "-I",
-      "/Users/leslie/clibs/raylib/src/",
+      "/home/leslie/raylib/src/",
       "-c",
       "-I",
       "./src/includes/",
@@ -33,8 +33,27 @@
       "src/grid.o",
       "src/grid.cpp"
     ],
-    "directory": "/Users/leslie/Documents/code/Cpp/GameOfLife",
-    "file": "/Users/leslie/Documents/code/Cpp/GameOfLife/src/grid.cpp",
-    "output": "/Users/leslie/Documents/code/Cpp/GameOfLife/src/grid.o"
+    "directory": "/home/leslie/Documents/GameOfLife",
+    "file": "/home/leslie/Documents/GameOfLife/src/grid.cpp",
+    "output": "/home/leslie/Documents/GameOfLife/src/grid.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++11",
+      "-Wall",
+      "-Wextra",
+      "-I",
+      "/home/leslie/raylib/src/",
+      "-c",
+      "-I",
+      "./src/includes/",
+      "-o",
+      "src/simulation.o",
+      "src/simulation.cpp"
+    ],
+    "directory": "/home/leslie/Documents/GameOfLife",
+    "file": "/home/leslie/Documents/GameOfLife/src/simulation.cpp",
+    "output": "/home/leslie/Documents/GameOfLife/src/simulation.o"
   }
 ]

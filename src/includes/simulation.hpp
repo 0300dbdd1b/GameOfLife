@@ -16,6 +16,9 @@ class Simulation
 		void ClearGrid();
 		void ToggleCell(int row, int column);
 		void CreateRandomState();
+		void Resize(int width, int height, int cellsize);
+		int GetWidth();
+		int GetHeight();
 	private:
 		Grid grid;
 		Grid tmpGrid;
