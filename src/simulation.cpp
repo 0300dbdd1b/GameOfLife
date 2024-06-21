@@ -5,7 +5,7 @@
 using namespace std;
 
 
-Simulation::Simulation(int width, int height, int cellsize)
+Simulation::Simulation(int width, int height, float cellsize)
 {
 	grid = Grid(width, height, cellsize);
 	tmpGrid = Grid(width, height, cellsize);
@@ -111,7 +111,7 @@ void Simulation::ToggleCell(int row, int column)
 	}
 }
 
-void Simulation::Resize(int width, int height, int cellsize)
+void Simulation::Resize(int width, int height, float cellsize)
 {
 	if (cellsize <= 0)
 	{cellsize= 1;}

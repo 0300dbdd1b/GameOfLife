@@ -10,13 +10,13 @@ class Grid
 {
 	public:
 		Grid();
-		Grid(int width, int height, int cellsize);
+		Grid(int width, int height, float cellsize);
 		void Draw();
 		void SetValue(int row, int column, int value);
 		int GetValue(int row, int column);
 		int GetRows() {return rows;}
 		int GetColumns() {return columns;}
-		int GetCellSize() {return cellSize;}
+		float GetCellSize() {return cellSize;}
 	bool IsWithinBounds(int row, int column);
 		void FillRandom();
 		void Clear();
@@ -24,6 +24,6 @@ class Grid
 	private:
 		int rows;
 		int columns;
-		int cellSize;
+		float cellSize;
 		vector<vector<int>> cells;
 };

@@ -7,7 +7,7 @@ Grid::Grid()
 	Grid(100,100,10);
 }
 
-Grid::Grid(int width, int height, int cellsize)
+Grid::Grid(int width, int height, float cellsize)
 {
 	if (cellsize <= 0)
 	{cellsize = 1;}

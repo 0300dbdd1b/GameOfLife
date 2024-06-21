@@ -2,13 +2,14 @@
 #include "includes/keybinds.hpp"
 #include <iostream>
 
-extern const double RENDERING_INCREASE = 0.05;
+extern const double RENDERING_INCREASE = 0.01;
 using namespace std;
 void KeybindChecks(Simulation &simulation, Camera2D &camera, float &renderTreshold, float &cellsize)
 {   
 
 	static Vector2 prevMousePos = { 0.0f, 0.0f };
     static bool isDragging = false;
+	static float adjustementTimer = 0.0f;
 	if(IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 	{
 		Vector2 mousePos = GetMousePosition();
@@ -79,18 +80,26 @@ void KeybindChecks(Simulation &simulation, Camera2D &camera, float &renderTresho
 			SetWindowTitle("Simulation Running");
 		}
 	}
-	if (IsKeyPressed(KEY_F))
+
+	adjustementTimer += GetFrameTime();
+	const float adjustementInterval = 0.085f;
+	if (adjustementTimer >= adjustementInterval)
 	{
-		if ((renderTreshold - RENDERING_INCREASE) >= 0)
-		{	
-			renderTreshold -= RENDERING_INCREASE;
-		}
-	}
-	if (IsKeyPressed(KEY_S))
-	{
-		if ((renderTreshold + RENDERING_INCREASE) >= 0)
+		if (IsKeyDown(KEY_F))
 		{
-			renderTreshold += RENDERING_INCREASE;
+			if ((renderTreshold - RENDERING_INCREASE) >= 0)
+			{	
+				renderTreshold -= RENDERING_INCREASE;
+				adjustementTimer = 0.0f;
+			}
+		}
+		if (IsKeyDown(KEY_S))
+		{
+			if ((renderTreshold + RENDERING_INCREASE) >= 0)
+			{
+				renderTreshold += RENDERING_INCREASE;
+				adjustementTimer = 0.0f;
+			}
 		}
 	}
 	if (IsKeyPressed(KEY_RIGHT_BRACKET))
