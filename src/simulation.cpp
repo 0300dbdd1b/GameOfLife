@@ -60,7 +60,7 @@ void Simulation::Update()
 
 			if (cellValue == ALIVE)
 			{
-				if (liveNeighbors > 3 || liveNeighbors < 2)
+				if (liveNeighbors > OVERPOPULATION_TRESHOLD || liveNeighbors < UNDERPOPULATION_TRESHOLD)
 				{
 					tmpGrid.SetValue(row, column, DEAD);
 				}
@@ -71,7 +71,7 @@ void Simulation::Update()
 			}
 			else
 			{
-				if (liveNeighbors == 3)
+				if (liveNeighbors == BIRTH_TRESHOLD)
  				{
 					tmpGrid.SetValue(row, column, ALIVE);
 				}
@@ -113,9 +113,12 @@ void Simulation::ToggleCell(int row, int column)
 
 void Simulation::Resize(int width, int height, int cellsize)
 {
+	if (cellsize <= 0)
+	{cellsize= 1;}
 	Grid newGrid (width, height, cellsize);
 	newGrid.FillRandom();
 	grid = newGrid;
+	tmpGrid = newGrid;
 }
 
 int Simulation::GetWidth()

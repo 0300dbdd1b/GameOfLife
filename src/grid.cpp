@@ -1,7 +1,7 @@
 #include "raylib.h"
 #include "includes/grid.hpp"
 
-
+const int DRAWCASE_OFFSET = 2;
 Grid::Grid()
 {
 	Grid(100,100,10);
@@ -9,6 +9,8 @@ Grid::Grid()
 
 Grid::Grid(int width, int height, int cellsize)
 {
+	if (cellsize <= 0)
+	{cellsize = 1;}
 	rows = height / cellsize;
 	columns = width / cellsize;
 	cellSize = cellsize;
@@ -21,8 +23,8 @@ void Grid::Draw()
 	{
 		for (int column = 0; column < columns; column++)
 		{
-			Color color = cells[row][column] ? GREEN : GRAY;
-			DrawRectangle(column * cellSize, row * cellSize, cellSize - 1, cellSize - 1, color);
+			Color color = cells[row][column] ? GREEN : DARKGRAY;
+			DrawRectangle(column * cellSize, row * cellSize, cellSize - DRAWCASE_OFFSET, cellSize - DRAWCASE_OFFSET, color);
 		}
 	}
 }

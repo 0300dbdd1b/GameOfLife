@@ -1,29 +1,35 @@
+
 SRCDIR      = ./src/
 INCDIR      = ./src/includes/
 SRCNAME     = main.cpp \
-			  grid.cpp \
-			  simulation.cpp \
-			  keybinds.cpp
+              grid.cpp \
+              simulation.cpp \
+              keybinds.cpp
 SRCS        = $(addprefix $(SRCDIR), $(SRCNAME))
-
 OBJS        = $(SRCS:.cpp=.o)
-
 CC          = g++
 CFLAGS      = -std=c++11 -Wall -Wextra -g3
-RL          = -I /home/leslie/raylib/src/
-LRL         = -L /home/leslie/raylib/src/ -lraylib
-
-CXXFLAGS    = $(CFLAGS) $(DEFINES) $(RL)
-
+RAYLIB      = ~/clibs/raylib/src/
+CXXFLAGS    = $(CFLAGS) -I $(INCDIR) -I $(RAYLIB)
 NAME        = GameOfLife
+
+# Detect OS
+UNAME_S := $(shell uname -s)
+
+# Conditional flags for macOS
+ifeq ($(UNAME_S), Darwin)
+    LDFLAGS += -L $(RAYLIB) -lraylib -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL
+else
+    LDFLAGS += -L $(RAYLIB) -lraylib
+endif
 
 all:        $(NAME)                 ## Build the project
 
 $(NAME):    $(OBJS)
-	$(CC) $(CXXFLAGS) -o $(NAME) $(OBJS) -I $(INCDIR) ${LRL}
+	$(CC) $(OBJS) $(CXXFLAGS) $(LDFLAGS) -o $(NAME)
 
 $(SRCDIR)%.o: $(SRCDIR)%.cpp
-	$(CC) $(CXXFLAGS) -c -I $(INCDIR) $< -o $@
+	$(CC) $(CXXFLAGS) -c $< -o $@
 
 clean:                              ## Remove all object files
 	rm -f $(OBJS)
@@ -36,6 +42,4 @@ re:         fclean all              ## Rebuild the project
 x:          all clean
 
 help:                               ## List all commands
-            @grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-
-.PHONY:     all clean fclean re x help
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) |

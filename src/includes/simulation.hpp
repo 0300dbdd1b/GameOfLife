@@ -1,7 +1,9 @@
 #pragma once
 #include "grid.hpp"
 
-
+extern int OVERPOPULATION_TRESHOLD;		// Any living cell with more neighbors than this treshold dies
+extern int UNDERPOPULATION_TRESHOLD;	// Any living cell with less neighbors than this treshold dies
+extern int BIRTH_TRESHOLD;				// Any dead cell with exactly this number of neighbors become alive
 class Simulation
 {
 	public:
