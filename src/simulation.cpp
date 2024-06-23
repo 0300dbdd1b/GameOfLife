@@ -5,7 +5,7 @@
 using namespace std;
 
 
-Simulation::Simulation(int width, int height, float cellsize)
+Simulation::Simulation(int width, int height, int cellsize)
 {
 	grid = Grid(width, height, cellsize);
 	tmpGrid = Grid(width, height, cellsize);
@@ -111,10 +111,10 @@ void Simulation::ToggleCell(int row, int column)
 	}
 }
 
-void Simulation::Resize(int width, int height, float cellsize)
+void Simulation::Resize(int width, int height, int cellsize)
 {
-	if (cellsize <= 0)
-	{cellsize= 1;}
+	if (cellsize <= 2)
+	{cellsize= 2;}
 	Grid newGrid (width, height, cellsize);
 	newGrid.FillRandom();
 	grid = newGrid;

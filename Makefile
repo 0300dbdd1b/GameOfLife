@@ -4,7 +4,6 @@ INCDIR      = ./src/includes/
 SRCNAME     = main.cpp \
               grid.cpp \
               simulation.cpp \
-              keybinds.cpp	\
 			  MainApp.cpp
 SRCS        = $(addprefix $(SRCDIR), $(SRCNAME))
 OBJS        = $(SRCS:.cpp=.o)

@@ -10,7 +10,7 @@ class Grid
 {
 	public:
 		Grid();
-		Grid(int width, int height, float cellsize);
+		Grid(int width, int height, int cellsize);
 		void Draw();
 		void SetValue(int row, int column, int value);
 		int GetValue(int row, int column);
@@ -24,6 +24,6 @@ class Grid
 	private:
 		int rows;
 		int columns;
-		float cellSize;
+		int cellSize;
 		vector<vector<int>> cells;
 };

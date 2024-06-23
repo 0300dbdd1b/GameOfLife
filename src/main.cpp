@@ -1,6 +1,5 @@
 #include <raylib.h>
 #include "includes/MainApp.hpp"
-#include "includes/keybinds.hpp"
 
 int main()
 {

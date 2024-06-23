@@ -7,7 +7,7 @@ extern int BIRTH_TRESHOLD;				// Any dead cell with exactly this number of neigh
 class Simulation
 {
 	public:
-		Simulation(int width, int height, float cellSize);
+		Simulation(int width, int height, int cellSize);
 		void Draw();
 		void SetCellValue(int row, int column, int value);
 		int CountLiveNeighbors(int row, int column);
@@ -18,7 +18,7 @@ class Simulation
 		void ClearGrid();
 		void ToggleCell(int row, int column);
 		void CreateRandomState();
-		void Resize(int width, int height, float cellsize);
+		void Resize(int width, int height, int cellsize);
 		int GetWidth();
 		int GetHeight();
 	private:
