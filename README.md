@@ -29,7 +29,7 @@ make
 To run the Game of Life simulation, use the following command:
 
 ```sh
-./game_of_life
+./GameOfLife
 ```
 
 ### Controls
