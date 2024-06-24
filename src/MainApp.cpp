@@ -1,6 +1,6 @@
-#include "includes/MainApp.hpp"
+#include "include/MainApp.hpp"
 #include "raylib.h"
-#include "simulation.hpp"
+#include "include/simulation.hpp"
 #include <cmath>
 #include <string>
 #include <iostream>

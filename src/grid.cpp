@@ -1,8 +1,8 @@
 #include "raylib.h"
-#include "includes/grid.hpp"
+#include "include/grid.hpp"
 
 const int DRAWCASE_OFFSET = 1;
-const Color ALIVE_CELL_COLOR = BLUE;
+const Color ALIVE_CELL_COLOR = GREEN;
 const Color DEAD_CELL_COLOR = DARKGRAY;
 
 Grid::Grid()
