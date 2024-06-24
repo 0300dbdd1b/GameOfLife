@@ -45,11 +45,6 @@ To run the Game of Life simulation, use the following command:
 | **F**     | Increase simulation speed       |
 | **S**     | Decrease simulation speed       |
 
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ## Built With
 
 - [Raylib](https://www.raylib.com/) - A simple and easy-to-use library to enjoy videogames programming.
