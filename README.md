@@ -36,12 +36,12 @@ To run the Game of Life simulation, use the following command:
 
 | Key       | Action                          |
 |-----------|---------------------------------|
-| **[**     | Decrease simulation speed       |
-| **]**     | Increase simulation speed       |
+| **[**     | Decrease the grid size          |
+| **]**     | Increase the grid size          |
 | **Space** | Pause or resume the simulation  |
 | **X**     | Recenter the grid               |
 | **R**     | Randomize the grid              |
-| **C**     | Clear the simulation            |
+| **C**     | Clear the grid                  |
 | **F**     | Increase simulation speed       |
 | **S**     | Decrease simulation speed       |
 
