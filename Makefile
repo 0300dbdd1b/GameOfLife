@@ -18,9 +18,10 @@ NAME        = GameOfLife
 # Detect OS
 UNAME_S := $(shell uname -s)
 
-# Conditional flags for macOS
 ifeq ($(UNAME_S), Darwin)
     LDFLAGS += -L $(RAYLIB_SRC) -lraylib -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL
+else ifeq ($(OS), Windows_NT)
+    LDFLAGS += -L $(RAYLIB_SRC) -lraylib -lopengl32 -lgdi32 -lwinmm -static
 else
     LDFLAGS += -L $(RAYLIB_SRC) -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 endif
