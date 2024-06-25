@@ -15,12 +15,18 @@ int BIRTH_TRESHOLD = 3;
 int OVERPOPULATION_TRESHOLD = 3;
 int UNDERPOPULATION_TRESHOLD = 2;
 
-int FPS = 120;
-float UPDATE_TRESHOLD = 0.5f;
-float REFRESH_TRESHOLD = 0.1f;
+int FPS = 120;							// FRAMES PER SECOND
+float UPDATE_RATE = 0.5f;				// RATE OF SIMULATION UPDATES ( 1 every UPDATE_RATE seconds)
+float REFRESH_RATE = 0.1f;				// RATE OF WINDOW REFRESHING ( 1 every REFRESH_RATE seconds)
 
-const float RENDERING_INCREASE = 0.01;
+const float RENDERING_INCREASE = 0.01f;
 const float ADJUSTMENT_INTERVAL = 0.085f;
+
+const float MAX_REFRESH_RATE = 0.0f;	// MAX RATE TO REFRESH THE WINDOW ( 1 time every MAX_REFRESH_RATE seconds)
+const float MIN_REFRESH_RATE = 1.0f;	// MIN RATE TO REFRESH THE WINDOW ( 1 time every MIN_REFRESH_RATE seconds)
+const float MAX_UPDATE_RATE = 0.0f;		// MAX RATE TO UPDATE THE SIMULATION ( 1 time every MAX_UPDATE_RATE seconds)
+const float MIN_UPDATE_RATE = 1/FPS;	// MIN RATE TO UPDATE THE SIMULATION ( 1 time every MIN_UPDATE_RATE seconds)
+const int MAX_ARROWS = 6;
 
 MainApp::MainApp()
 	:	simulation(WINDOW_WIDTH, WINDOW_HEIGHT, static_cast<float>(WINDOW_WIDTH) / BASE_NCELL),
@@ -30,8 +36,6 @@ MainApp::MainApp()
 		.rotation = 0.0f,
 		.zoom = 1.0f})
 {
-
-
 }
 
 void MainApp::MainLoop()
@@ -39,7 +43,6 @@ void MainApp::MainLoop()
 	int CELL_SIZE = static_cast<float>(WINDOW_WIDTH) / BASE_NCELL;
 	double updateStartTime = GetTime();
 	double refreshStartTime = updateStartTime;
-
 
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "GameOfLife");
@@ -52,12 +55,12 @@ void MainApp::MainLoop()
 
 		KeybindsCheck(CELL_SIZE);
 
-		if (simulation.IsRunning() && updateDelta >= UPDATE_TRESHOLD)
+		if (simulation.IsRunning() && updateDelta >= UPDATE_RATE)
 		{
 			simulation.Update();
 			updateStartTime = GetTime();
 		}
-		if (refreshDelta >= REFRESH_TRESHOLD)
+		if (refreshDelta >= REFRESH_RATE)
 		{
 			BeginDrawing();
 			ClearBackground(BACKGROUND_COLOR);
@@ -65,15 +68,10 @@ void MainApp::MainLoop()
 			simulation.Draw();
 			EndMode2D();
 			DrawFPS(0, 0);
-			string displayUpdateTreshold = to_string(UPDATE_TRESHOLD);
-			displayUpdateTreshold.resize(4);
-			DrawText(displayUpdateTreshold.c_str(), WINDOW_WIDTH - 100, 0, 24, RED);
 			EndDrawing();
 		}
 	}
 	CloseWindow();
-
-
 }
 
 void MainApp::KeybindsCheck(int &CELL_SIZE)
@@ -160,17 +158,25 @@ void MainApp::KeybindsCheck(int &CELL_SIZE)
 
 		if (IsKeyDown(KEY_F))
 		{
-			if (( UPDATE_TRESHOLD - RENDERING_INCREASE) >= 0)
+			if (( UPDATE_RATE - RENDERING_INCREASE) >= MAX_UPDATE_RATE)
 			{	
-				UPDATE_TRESHOLD -= RENDERING_INCREASE;
+				UPDATE_RATE -= RENDERING_INCREASE;
+			}
+			else
+			{
+				UPDATE_RATE = MAX_UPDATE_RATE;
 			}
 			adjustementTimer = 0.0f;
 		}
 		if (IsKeyDown(KEY_S))
 		{
-			if ((UPDATE_TRESHOLD + RENDERING_INCREASE) >= 0)
+			if ((UPDATE_RATE + RENDERING_INCREASE >= MIN_UPDATE_RATE))
 			{
-				UPDATE_TRESHOLD += RENDERING_INCREASE;
+				UPDATE_RATE += RENDERING_INCREASE;
+			}
+			else
+			{
+				UPDATE_RATE = MIN_UPDATE_RATE;
 			}
 			adjustementTimer = 0.0f;
 		}
