@@ -1,13 +1,16 @@
 #include "raylib.h"
 #include "include/grid.hpp"
+# include <iostream>
 
-const int DRAWCASE_OFFSET = 1;
-const Color ALIVE_CELL_COLOR = GREEN;
-const Color DEAD_CELL_COLOR = DARKGRAY;
+using namespace std;
 
 Grid::Grid()
 {
 	Grid(100,100,10);
+}
+
+Grid::~Grid()
+{
 }
 
 Grid::Grid(int width, int height, int cellsize)
@@ -20,17 +23,7 @@ Grid::Grid(int width, int height, int cellsize)
 	cells = vector<vector<int>>(rows, vector<int>(columns,0));
 }
 
-void Grid::Draw()
-{
-	for (int row = 0; row < rows; row++)
-	{
-		for (int column = 0; column < columns; column++)
-		{
-			Color color = cells[row][column] ? ALIVE_CELL_COLOR : DEAD_CELL_COLOR;
-			DrawRectangle(column * cellSize, row * cellSize, cellSize - DRAWCASE_OFFSET, cellSize - DRAWCASE_OFFSET, color);
-		}
-	}
-}
+
 
 void Grid::FillRandom()
 {

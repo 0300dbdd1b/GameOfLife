@@ -5,8 +5,6 @@
 #include <string>
 #include <iostream>
 
-int WINDOW_WIDTH = 800;
-int WINDOW_HEIGHT = 800;
 int BASE_NCELL = 5;
 
 Color BACKGROUND_COLOR = GRAY;
@@ -27,6 +25,9 @@ const float MIN_REFRESH_RATE = 1.0f;	// MIN RATE TO REFRESH THE WINDOW ( 1 time 
 const float MAX_UPDATE_RATE = 0.0f;		// MAX RATE TO UPDATE THE SIMULATION ( 1 time every MAX_UPDATE_RATE seconds)
 const float MIN_UPDATE_RATE = 1/FPS;	// MIN RATE TO UPDATE THE SIMULATION ( 1 time every MIN_UPDATE_RATE seconds)
 const int MAX_ARROWS = 6;
+const int DRAWCASE_OFFSET = 1;
+const Color ALIVE_CELL_COLOR = GREEN;
+const Color DEAD_CELL_COLOR = DARKGRAY;
 
 MainApp::MainApp()
 	:	simulation(WINDOW_WIDTH, WINDOW_HEIGHT, static_cast<float>(WINDOW_WIDTH) / BASE_NCELL),
@@ -36,6 +37,7 @@ MainApp::MainApp()
 		.rotation = 0.0f,
 		.zoom = 1.0f})
 {
+	renderTexture = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
 }
 
 void MainApp::MainLoop()
@@ -44,9 +46,7 @@ void MainApp::MainLoop()
 	double updateStartTime = GetTime();
 	double refreshStartTime = updateStartTime;
 
-	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "GameOfLife");
-	SetTargetFPS(FPS);
+	//SetTargetFPS(FPS);
 	while (!WindowShouldClose())
 	{
 		double currentTime = GetTime();
@@ -62,13 +62,7 @@ void MainApp::MainLoop()
 		}
 		if (refreshDelta >= REFRESH_RATE)
 		{
-			BeginDrawing();
-			ClearBackground(BACKGROUND_COLOR);
-			BeginMode2D(camera);
-			simulation.Draw();
-			EndMode2D();
-			DrawFPS(0, 0);
-			EndDrawing();
+			Draw(CELL_SIZE);
 		}
 	}
 	CloseWindow();
@@ -199,20 +193,21 @@ void MainApp::KeybindsCheck(int &CELL_SIZE)
 		{
 			simulation.ClearGrid();
 		}
-
+		if (IsKeyPressed(KEY_F11))
+		{
+	  		ToggleFullscreen();
+		}
 	}
 }
 
-
 int MainApp::ComputeNewCellSize(int &cellsize, int n)
 {
-	cout << "minisell : " << cellsize << endl;
 	int nCells = round((WINDOW_WIDTH / cellsize) + n);
 	cout << "NCELLS : " << nCells << endl;
 	if (nCells >= BASE_NCELL)
 	{
 		int newCellSize = round(WINDOW_WIDTH / nCells);
-		if ((newCellSize >= 2) && (newCellSize != cellsize))
+		if ((newCellSize >= 1))
 		{
 
 			simulation.Resize(WINDOW_WIDTH, WINDOW_HEIGHT, newCellSize);
@@ -220,4 +215,31 @@ int MainApp::ComputeNewCellSize(int &cellsize, int n)
 		}
 	}
 	return (round(WINDOW_WIDTH / BASE_NCELL));
+}
+
+void MainApp::Draw(int &CELL_SIZE)
+{
+	BeginTextureMode(renderTexture);
+		ClearBackground(BLACK);
+		BeginMode2D(camera);
+		for (int row = 0; row < simulation.grid.GetRows(); row++)
+		{
+			for (int column = 0; column < simulation.grid.GetColumns(); column++)
+			{
+				Color color = simulation.grid.cells[row][column] ? ALIVE_CELL_COLOR : DEAD_CELL_COLOR;
+				Vector2 position = {(float)(column * CELL_SIZE),(float)(row * CELL_SIZE)};
+				Vector2 size = {(float)(CELL_SIZE - DRAWCASE_OFFSET),(float)(CELL_SIZE - DRAWCASE_OFFSET)};
+				DrawRectangleV(position, size, color);
+			}
+		}
+		EndMode2D();
+	EndTextureMode();
+
+	BeginDrawing();
+		ClearBackground(BLACK);
+		BeginMode2D(camera);
+			DrawTexture(renderTexture.texture, 0, 0, WHITE);
+		EndMode2D();
+	DrawFPS(0,0);
+	EndDrawing();
 }

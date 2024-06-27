@@ -8,7 +8,6 @@ class Simulation
 {
 	public:
 		Simulation(int width, int height, int cellSize);
-		void Draw();
 		void SetCellValue(int row, int column, int value);
 		int CountLiveNeighbors(int row, int column);
 		void Update();
@@ -21,7 +20,6 @@ class Simulation
 		void Resize(int width, int height, int cellsize);
 		int GetWidth();
 		int GetHeight();
-	private:
 		Grid grid;
 		Grid tmpGrid;
 		bool run;

@@ -13,10 +13,7 @@ Simulation::Simulation(int width, int height, int cellsize)
 	run = false;
 }
 
-void Simulation::Draw()
-{
-	grid.Draw();
-}
+
 
 
 void Simulation::SetCellValue(int row, int column, int value)
