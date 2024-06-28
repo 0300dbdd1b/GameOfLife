@@ -27,7 +27,9 @@ void Grid::Draw()
 		for (int column = 0; column < columns; column++)
 		{
 			Color color = cells[row][column] ? ALIVE_CELL_COLOR : DEAD_CELL_COLOR;
-			DrawRectangle(column * cellSize, row * cellSize, cellSize - DRAWCASE_OFFSET, cellSize - DRAWCASE_OFFSET, color);
+			Vector2 position = {(float)(column * cellSize),(float)(row * cellSize)};
+			Vector2 size = {(float)(cellSize - DRAWCASE_OFFSET),(float)(cellSize - DRAWCASE_OFFSET)};
+			DrawRectangleV(position, size, color);
 		}
 	}
 }

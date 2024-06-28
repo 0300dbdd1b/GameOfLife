@@ -9,6 +9,7 @@ int WINDOW_WIDTH = 800;
 int WINDOW_HEIGHT = 800;
 int BASE_NCELL = 5;
 
+
 Color BACKGROUND_COLOR = GRAY;
 
 int BIRTH_TRESHOLD = 3;
@@ -19,14 +20,45 @@ int FPS = 120;							// FRAMES PER SECOND
 float UPDATE_RATE = 0.5f;				// RATE OF SIMULATION UPDATES ( 1 every UPDATE_RATE seconds)
 float REFRESH_RATE = 0.1f;				// RATE OF WINDOW REFRESHING ( 1 every REFRESH_RATE seconds)
 
-const float RENDERING_INCREASE = 0.01f;
+const float RENDERING_INCREASE = 0.1f;
 const float ADJUSTMENT_INTERVAL = 0.085f;
 
 const float MAX_REFRESH_RATE = 0.0f;	// MAX RATE TO REFRESH THE WINDOW ( 1 time every MAX_REFRESH_RATE seconds)
 const float MIN_REFRESH_RATE = 1.0f;	// MIN RATE TO REFRESH THE WINDOW ( 1 time every MIN_REFRESH_RATE seconds)
 const float MAX_UPDATE_RATE = 0.0f;		// MAX RATE TO UPDATE THE SIMULATION ( 1 time every MAX_UPDATE_RATE seconds)
-const float MIN_UPDATE_RATE = 1/FPS;	// MIN RATE TO UPDATE THE SIMULATION ( 1 time every MIN_UPDATE_RATE seconds)
-const int MAX_ARROWS = 6;
+const float MIN_UPDATE_RATE =  1;		// MIN RATE TO UPDATE THE SIMULATION ( 1 time every MIN_UPDATE_RATE seconds)
+
+// Constants for drawing the speed bar
+const int TRIANGLE_SIZE = 20; 			// Size of each triangle
+const int TRIANGLE_SPACING = 2; 		// Spacing between triangles
+const int PADDING = 10; 				// Padding from the top right corner
+const int MAX_SPEED_LEVELS = 10; 		// Number of speed levels (triangles)
+
+void MainApp::DrawSimulationSpeed(float speed)
+{
+    int screenWidth = GetScreenWidth();
+
+    int filledTriangles = static_cast<int>(speed * MAX_SPEED_LEVELS);
+
+    for (int i = 0; i < MAX_SPEED_LEVELS; ++i)
+    {
+        int baseX = screenWidth - (i + 1) * (TRIANGLE_SIZE + TRIANGLE_SPACING) - PADDING;
+        int baseY = PADDING;
+
+        Vector2 top = { (float)baseX + TRIANGLE_SIZE / 2.0f, (float)baseY };
+        Vector2 left = { (float)baseX, (float)baseY + TRIANGLE_SIZE };
+        Vector2 right = { (float)baseX + TRIANGLE_SIZE, (float)baseY + TRIANGLE_SIZE };
+
+        if (i < filledTriangles)
+        {
+            DrawTriangle(top, left, right, GRAY);
+        }
+        else
+        {
+            DrawTriangle(top, left, right, RED);
+        }
+    }
+}
 
 MainApp::MainApp()
 	:	simulation(WINDOW_WIDTH, WINDOW_HEIGHT, static_cast<float>(WINDOW_WIDTH) / BASE_NCELL),
@@ -63,11 +95,12 @@ void MainApp::MainLoop()
 		if (refreshDelta >= REFRESH_RATE)
 		{
 			BeginDrawing();
-			ClearBackground(BACKGROUND_COLOR);
-			BeginMode2D(camera);
-			simulation.Draw();
-			EndMode2D();
-			DrawFPS(0, 0);
+				ClearBackground(BACKGROUND_COLOR);
+				BeginMode2D(camera);
+					simulation.Draw();
+				EndMode2D();
+				DrawFPS(0, 0);
+				DrawSimulationSpeed(UPDATE_RATE);
 			EndDrawing();
 		}
 	}
@@ -86,8 +119,7 @@ void MainApp::KeybindsCheck(int &CELL_SIZE)
 	{
 		if(IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 		{
-			Vector2 mousePos = GetMousePosition();
-			Vector2 worldPos = GetScreenToWorld2D(mousePos, camera);
+			Vector2 worldPos = GetScreenToWorld2D(GetMousePosition(), camera);
 			simulation.ToggleCell(worldPos.y / CELL_SIZE, worldPos.x / CELL_SIZE);
 			adjustementTimer = 0.0f;
 		}
@@ -102,7 +134,7 @@ void MainApp::KeybindsCheck(int &CELL_SIZE)
 				// Zoom centered on mouse position
 				Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera);
 				camera.zoom += mouseWheelMove * 0.1f;
-				if (camera.zoom < 0.1f) camera.zoom = 0.1f;  // Prevent zooming out too much
+				if (camera.zoom < 1.0f) camera.zoom = 1.0f;  // Prevent zooming out too much
 
 				Vector2 newMouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera);
 				Vector2 deltaPos = { newMouseWorldPos.x - mouseWorldPos.x, newMouseWorldPos.y - mouseWorldPos.y };
@@ -112,7 +144,7 @@ void MainApp::KeybindsCheck(int &CELL_SIZE)
 			{
 				// Zoom centered on screen
 				camera.zoom += mouseWheelMove * 0.1f;
-				if (camera.zoom < 0.1f) camera.zoom = 0.1f;  // Prevent zooming out too much
+				if (camera.zoom < 1.0f) camera.zoom = 1.0f;  // Prevent zooming out too much
 			}
 		}
 		if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
@@ -170,7 +202,7 @@ void MainApp::KeybindsCheck(int &CELL_SIZE)
 		}
 		if (IsKeyDown(KEY_S))
 		{
-			if ((UPDATE_RATE + RENDERING_INCREASE >= MIN_UPDATE_RATE))
+			if ((UPDATE_RATE + RENDERING_INCREASE <= MIN_UPDATE_RATE))
 			{
 				UPDATE_RATE += RENDERING_INCREASE;
 			}
@@ -199,7 +231,7 @@ void MainApp::KeybindsCheck(int &CELL_SIZE)
 		{
 			simulation.ClearGrid();
 		}
-
+		cout << UPDATE_RATE << endl;
 	}
 }
 

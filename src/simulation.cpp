@@ -26,28 +26,21 @@ void Simulation::SetCellValue(int row, int column, int value)
 
 int Simulation::CountLiveNeighbors(int row, int column)
 {
-	int liveNeighbors = 0;
-	vector<pair<int, int>> neighborOffsets = 
-	{
-		{-1, 0},	// above
-		{1, 0},		// below
-		{0, -1},	// left
-		{0, 1},		// right
-		{-1, -1},	// diagonal upper right
-		{1, -1},	// diagonal lower left
-		{1, 1},
-		{-1, 1} 		// diagonal lower right
-	};
-	for (const auto& offset : neighborOffsets)
-	{
-		int neighborRow = (row + offset.first + grid.GetRows()) % grid.GetRows();
-		int neighborColumn = (column + offset.second + grid.GetColumns()) % grid.GetColumns();
-		liveNeighbors += grid.GetValue(neighborRow, neighborColumn);
-	}
-	return liveNeighbors;
+    int liveNeighbors = 0;
+    const int neighborOffsets[8][2] = {
+        {-1, 0}, {1, 0}, {0, -1}, {0, 1},
+        {-1, -1}, {1, -1}, {1, 1}, {-1, 1}
+    };
 
-
+    for (int i = 0; i < 8; ++i)
+    {
+        int neighborRow = (row + neighborOffsets[i][0] + grid.GetRows()) % grid.GetRows();
+        int neighborColumn = (column + neighborOffsets[i][1] + grid.GetColumns()) % grid.GetColumns();
+        liveNeighbors += grid.GetValue(neighborRow, neighborColumn);
+    }
+    return liveNeighbors;
 }
+
 
 void Simulation::Update()
 {
@@ -80,7 +73,6 @@ void Simulation::Update()
 					tmpGrid.SetValue(row, column, DEAD);
 				}
 			}
-
 		}
 	}
 	grid = tmpGrid;
@@ -94,13 +86,12 @@ bool Simulation::IsRunning()
 
 void Simulation::ClearGrid()
 {
-		grid.Clear();
-
+	grid.Clear();
 }
 
 void Simulation::CreateRandomState()
 {
-		grid.FillRandom();
+	grid.FillRandom();
 }
 
 void Simulation::ToggleCell(int row, int column)
