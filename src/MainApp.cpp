@@ -215,13 +215,10 @@ void MainApp::KeybindsCheck(int &CELL_SIZE)
 		if (IsKeyPressed(KEY_RIGHT_BRACKET))
 		{
 			CELL_SIZE = ComputeNewCellSize(CELL_SIZE, 5);
-			cout << "CELLSIZE : " << CELL_SIZE << endl;
-
 		}
 		if (IsKeyPressed(KEY_LEFT_BRACKET))
 		{
 			CELL_SIZE = ComputeNewCellSize(CELL_SIZE, -5);
-			cout << "CELLSIZE : " << CELL_SIZE << endl;
 		}
 		if (IsKeyPressed(KEY_R))
 		{
@@ -231,16 +228,13 @@ void MainApp::KeybindsCheck(int &CELL_SIZE)
 		{
 			simulation.ClearGrid();
 		}
-		cout << UPDATE_RATE << endl;
 	}
 }
 
 
 int MainApp::ComputeNewCellSize(int &cellsize, int n)
 {
-	cout << "minisell : " << cellsize << endl;
 	int nCells = round((WINDOW_WIDTH / cellsize) + n);
-	cout << "NCELLS : " << nCells << endl;
 	if (nCells >= BASE_NCELL)
 	{
 		int newCellSize = round(WINDOW_WIDTH / nCells);
